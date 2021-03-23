@@ -64,18 +64,23 @@ const sendForm = () => {
 
         event.preventDefault();
 
-        // Сделать customValidity для телефона и для имени
-        if ( event.target.querySelector('[type="tel"]').value.match(/^\+/) && event.target.querySelector('[type="tel"]').value.length < 12 ) {
-           event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
-           event.target.querySelector('[type="tel"]').reportValidity();
-           return;
-        }
+        // Сделать customValidity для телефона и для имени - доработать
 
-        if ( event.target.querySelector('[type="tel"]').value.match(/^(7|8)/) && event.target.querySelector('[type="tel"]').value.length < 11 ) {
-           event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
-           event.target.querySelector('[type="tel"]').reportValidity();
-           return;
-        }
+        // if ( event.target.querySelector('[type="tel"]').value.match(/^\+/) && event.target.querySelector('[type="tel"]').value.length < 12 ) {
+        //    event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
+        //    console.log('test');
+        //    event.target.value = '';
+        //    return;
+        // }
+        // // } else if ( event.target.querySelector('[type="tel"]').value.match(/^(7|8)/) && event.target.querySelector('[type="tel"]').value.length < 11 ) {
+        // //     event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
+        // //     event.target.querySelector('[type="tel"]').reportValidity();
+        // //     return;
+        // // } else if ( event.target.querySelector('[type="tel"]').value.length < 11 ) {
+        // //     event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
+        // //     event.target.querySelector('[type="tel"]').reportValidity();
+        // //     return;
+        // // }
 
         statusMessage.style.color = '#ffd11a';
 
