@@ -60,27 +60,21 @@ const sendForm = () => {
 
     document.body.addEventListener('submit', (event) => {
 
-        console.log(event.target.querySelector('[type="tel"]'));
-
         event.preventDefault();
+        
+        // Set events for validation. Its simplifies the code
+        let currentPhoneInput = event.target.querySelector('[type="tel"]'),
+            isStartPlusAndLess12 = currentPhoneInput.value.match(/^\+/) && currentPhoneInput.value.length < 12,
+            isStartNumAndLess11 = currentPhoneInput.value.match(/^(7|8)/) && currentPhoneInput.value.length < 11,
+            isNoStartAndLess11 = currentPhoneInput.value.length < 11;
 
-        // Сделать customValidity для телефона и для имени - доработать
-
-        // if ( event.target.querySelector('[type="tel"]').value.match(/^\+/) && event.target.querySelector('[type="tel"]').value.length < 12 ) {
-        //    event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
-        //    console.log('test');
-        //    event.target.value = '';
-        //    return;
-        // }
-        // // } else if ( event.target.querySelector('[type="tel"]').value.match(/^(7|8)/) && event.target.querySelector('[type="tel"]').value.length < 11 ) {
-        // //     event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
-        // //     event.target.querySelector('[type="tel"]').reportValidity();
-        // //     return;
-        // // } else if ( event.target.querySelector('[type="tel"]').value.length < 11 ) {
-        // //     event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
-        // //     event.target.querySelector('[type="tel"]').reportValidity();
-        // //     return;
-        // // }
+        if ( isStartPlusAndLess12 || isStartNumAndLess11 || isNoStartAndLess11 ) {
+            // Set custom error validity message
+            event.target.querySelector('[type="tel"]').setCustomValidity('Недостаточно символов для номера телефона');
+            // Check error fix
+            event.target.querySelector('[type="tel"]').addEventListener('blur', function() { this.value.length === 12 && this.setCustomValidity(''); }, false);
+            return;
+        }
 
         statusMessage.style.color = '#ffd11a';
 
@@ -219,3 +213,21 @@ const controlData = () => {
 };
 
 controlData();
+
+// This script show gift
+const showGift = () => {
+    const giftFrame = document.getElementById('gift'),
+          giftBtn = document.querySelector('.fixed-gift');
+
+    document.body.addEventListener('click', (event) => {
+        if ( event.target.closest('.fixed-gift') ) {
+            giftFrame.style.display = 'block';
+            giftBtn.style.display = 'none';
+        } else if ( ( event.target.closest('.close-form') ) || ( !event.target.closest('.form-wrapper') || ( event.target.matches('.close-btn') ) ) ) {
+            giftFrame.style.display = 'none';
+        }
+    });
+};
+
+showGift();
+
