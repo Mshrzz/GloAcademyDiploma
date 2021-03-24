@@ -27,7 +27,7 @@ const openMenu = () => {
         }
 
         // Modal window "callback form" logic
-        if ( target.closest('[data-popup="#callback_form"]') ) {
+        if ( target.closest('[data-popup="#callback_form"]') && !(target.closest('form')) ) {
             popupCallbackForm.style.display = 'block';
         } else if ( ( target.closest('.close-form') ) || ( !target.closest('.form-wrapper') ) ) {
             popupCallbackForm.style.display = 'none';
@@ -230,4 +230,31 @@ const showGift = () => {
 };
 
 showGift();
+
+// Main page slider
+const mainPageSlider = () => {
+    
+    const slides = document.querySelector('.main-slider').children;
+
+    let currentSlide = 0;
+
+    const autoPlay = () => {
+        // Hide prev slide
+        slides[currentSlide].style.display = 'none';
+        // Refresh counter
+        currentSlide++;
+        // Reset counter
+        if ( currentSlide >= slides.length ) {
+            currentSlide = 0;
+        }
+        // Show next counter
+        slides[currentSlide].style.display = 'flex';
+
+    };
+
+    setInterval(autoPlay, 3000);
+
+};
+
+mainPageSlider();
 
