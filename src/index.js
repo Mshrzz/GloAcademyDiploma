@@ -61,7 +61,27 @@ const sendForm = () => {
     document.body.addEventListener('submit', (event) => {
 
         event.preventDefault();
-        
+
+        // If checkbox exists and not checked
+        if ( event.target.querySelector('[type="checkbox"]') && !event.target.querySelector('[type="checkbox"]').checked ) {
+            
+            const checkboxBlock = event.target.querySelector('.personal-data'),
+                  checkboxMessBlock = document.createElement('p');
+            // Set text and styles for checkbox error message
+            checkboxMessBlock.style.cssText = 'color: red; font-size: 1.2em; margin: 5px 0;';
+            checkboxMessBlock.textContent = 'Вы должны подтвердить согласие';
+            // Push it to the checkbox block
+            checkboxBlock.append(checkboxMessBlock);
+            // Block send button for 1,5s (if button pressed N times, you can see only 1 checkboxMessBlock)
+            event.target.querySelector('[type="submit"]').disabled = true;
+            // After 1,5s hide checkboxMessBlock and enable send button
+            setTimeout(() => {
+                checkboxMessBlock.style.display = 'none';
+                event.target.querySelector('[type="submit"]').disabled = false;
+            }, 1000);
+            return;
+        }
+
         // Set events for validation. Its simplifies the code
         let currentPhoneInput = event.target.querySelector('[type="tel"]'),
             isStartPlusAndLess12 = currentPhoneInput.value.match(/^\+/) && currentPhoneInput.value.length < 12,
@@ -106,7 +126,7 @@ const sendForm = () => {
 
                     // Create and style form success message
                     const successBlock = document.createElement('div'),
-                        imgSuccessBlock = document.createElement('img');
+                          imgSuccessBlock = document.createElement('img');
                     
                     successBlock.style.cssText = `display: block; color: #fff; margin: auto; margin-top: 50px; font-size: 1.5em; max-width: 200px;`;
                     imgSuccessBlock.src = './images/success.svg';
@@ -192,7 +212,11 @@ const controlData = () => {
     document.body.addEventListener('input', (event) => {
         let target = event.target;
 
-        if ( target.matches('[name="name"]') ) {
+        if ( target.closest('.price-message') ) {
+            target.value = target.value.replace(/[^0-9а-яё\- ]/gi, '');
+        }
+
+        if ( target.matches('[name="name"]') && !target.closest('.price-message') ) {
             target.value = target.value.replace(/[^а-яё\-\ ]/gi, '');
         }
 
