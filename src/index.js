@@ -117,7 +117,7 @@ const sendForm = () => {
             .then(() => {
 
                 if ( event.target.closest('.form-content') ) {
-                        // Clear form's inputs
+                    // Clear form's inputs
                     let formInputs = event.target.querySelectorAll('input');
                     formInputs.forEach(item => item.value = '');
                     
@@ -152,6 +152,8 @@ const sendForm = () => {
                     statusMessage.textContent = successMessage;
                     // Clearn succes style for input after 1500ms
                     setTimeout(() => event.target.querySelectorAll('input').forEach((item) => item.style.border = 'none'), 1500);
+
+                    document.getElementById('thanks').style.display = 'flex';
                 }
 
             })
