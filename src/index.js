@@ -320,4 +320,3 @@ const mainPageSlider = () => {
 };
 
 mainPageSlider();
-

@@ -270,6 +270,12 @@
                 <p>Йога - идеальны не только физическая форма, но и эмоциональное состояние</p>
             </div>
         </div>
+        <button id="arr-left">
+            <
+        </button>
+        <button id="arr-right">
+            >
+        </button>
     </div>
 </section>
 <section id="gallery">
@@ -513,6 +519,22 @@
     </div>
 
 </div>
+
 <script src="./dist/bundle.js" defer></script>
+<script src="./src/sliderCarousel.js"></script>
+
+<script>
+
+    const carousel = new SliderCarousel({
+        main: '#services .wrapper',
+        wrap: '.services-slider',
+        prev: '#arr-left',
+        next: '#arr-right'
+    });
+
+    carousel.init();
+
+</script>
+
 </body>
 </html>
