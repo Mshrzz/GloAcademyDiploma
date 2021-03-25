@@ -152,8 +152,14 @@ const sendForm = () => {
                     statusMessage.textContent = successMessage;
                     // Clearn succes style for input after 1500ms
                     setTimeout(() => event.target.querySelectorAll('input').forEach((item) => item.style.border = 'none'), 1500);
-
+                    // Open thanks frame
                     document.getElementById('thanks').style.display = 'flex';
+                    // Close event listener for this thanks frame
+                    document.body.addEventListener('click', (event) => {
+                        if ( ( event.target.closest('.close-form') ) || ( !event.target.closest('.form-wrapper') || ( event.target.matches('.close-btn') ) ) ) {
+                            document.getElementById('thanks').style.display = 'none';
+                        }
+                    });
                 }
 
             })
@@ -195,6 +201,37 @@ const sendForm = () => {
                     statusMessage.textContent = errorMessage;
                     // Clear error style for input after 1500ms
                     setTimeout(() => event.target.querySelectorAll('input').forEach((item) => item.style.border = 'none'), 1500);
+                    
+                    // Create error message and put it to thanks modal window
+                    const thanksErrHeader = document.createElement('h4'),
+                          thanksErrContent = document.createElement('p');
+
+                    thanksErrHeader.textContent = 'Произошла ошибка!';
+                    thanksErrContent.innerHTML = 'Данные не получилось отправить.<br>Попробуйте ещё раз.';
+
+                    thanksErrHeader.classList.add('error-message-head');
+                    thanksErrContent.classList.add('error-message-content');
+
+                    document.getElementById('thanks').querySelector('h4').style.display = 'none';
+                    document.getElementById('thanks').querySelector('p').style.display = 'none';
+
+                    document.getElementById('thanks').querySelector('.form-content').insertAdjacentElement('afterbegin', thanksErrContent);
+                    document.getElementById('thanks').querySelector('.form-content').insertAdjacentElement('afterbegin', thanksErrHeader);
+
+                    // Open thanks frame
+                    document.getElementById('thanks').style.display = 'flex';
+                    
+                    // Close event listener for this thanks frame
+                    document.body.addEventListener('click', (event) => {
+                        if ( ( event.target.closest('.close-form') ) || ( !event.target.closest('.form-wrapper') || ( event.target.matches('.close-btn') ) ) ) {
+                            document.getElementById('thanks').style.display = 'none';
+                            // Reset styles
+                            thanksErrHeader.remove();
+                            thanksErrContent.remove();
+                            document.getElementById('thanks').querySelector('h4').style.display = 'block';
+                            document.getElementById('thanks').querySelector('p').style.display = 'block';
+                        }
+                    });
                 }
                 // Put in log error message
                 console.error(err);
