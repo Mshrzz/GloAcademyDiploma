@@ -79,6 +79,18 @@ const sendForm = () => {
                 checkboxMessBlock.style.display = 'none';
                 event.target.querySelector('[type="submit"]').disabled = false;
             }, 1000);
+
+            return;
+        }
+
+        // Validation for name
+        if ( (event.target.querySelector('[name="name"]').value.trim().length < 2) && !(event.target.closest('.price-message')) ) {
+            
+            const inputName = event.target.querySelector('[name="name"]');
+            
+            inputName.setCustomValidity('Недостаточно символов для имени');
+            inputName.addEventListener('blur', function() { this.value.trim().length >= 2 && this.setCustomValidity(''); }, false);
+            
             return;
         }
 
@@ -237,8 +249,15 @@ const sendForm = () => {
                 console.error(err);
             })
             .finally(() => {
+
+                // Reset checkbox
+                event.target.querySelector('[type="checkbox"]').checked = false;
+
                 setTimeout(() => {
+
                     statusMessage.textContent = '';
+                    document.body.querySelectorAll('.popup').forEach(popup => popup.style.display = 'none');
+
                 }, 1500);
             });
     });
