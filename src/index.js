@@ -914,7 +914,7 @@ const smoothScrolling = () => {
             targetTagA = event.target.closest('a');
         
         // Сразу отсекаем клик на кнопки отправки заявки
-        if (target.matches('button') || target.classList.contains('close-btn') || target.closest('form') || targetTagA.getAttribute('href')[0] === '.') {
+        if (target.matches('button') || target.classList.contains('close-btn') || target.closest('form') || (targetTagA && targetTagA.getAttribute('href')[0] === '.') ) {
             return;
         }
         
