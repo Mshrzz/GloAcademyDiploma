@@ -1,5 +1,4 @@
 'use strict';
-
 // This script opens menu and modal windows at the page
 const openMenu = () => {
 
@@ -84,8 +83,7 @@ const sendForm = () => {
         }
 
         // Validation for name
-        if ( (event.target.querySelector('[name="name"]').value.trim().length < 2) && !(event.target.closest('.price-message')) ) {
-            
+        if ( ((event.target.querySelector('[name="name"]')) && (event.target.querySelector('[name="name"]').value.trim().length < 2) && !(event.target.closest('.price-message'))) ) {
             const inputName = event.target.querySelector('[name="name"]');
             
             inputName.setCustomValidity('Недостаточно символов для имени');
@@ -251,7 +249,9 @@ const sendForm = () => {
             .finally(() => {
 
                 // Reset checkbox
-                event.target.querySelector('[type="checkbox"]').checked = false;
+                if (event.target.querySelector('[type="checkbox"]')) {
+                    event.target.querySelector('[type="checkbox"]').checked = false;
+                }
 
                 setTimeout(() => {
 
@@ -305,7 +305,7 @@ const showGift = () => {
         if ( event.target.closest('.fixed-gift') ) {
             giftFrame.style.display = 'block';
             giftBtn.style.display = 'none';
-        } else if ( ( event.target.closest('.close-form') ) || ( !event.target.closest('.form-wrapper') || ( event.target.matches('.close-btn') ) ) ) {
+        } else if ( ( ( event.target.closest('.close-form') ) || ( !event.target.closest('.form-wrapper') || ( event.target.matches('.close-btn') ) ) ) && !(event.target.closest('#card_order')) ) {
             giftFrame.style.display = 'none';
         }
     });
@@ -777,3 +777,63 @@ const photoSlider = () => {
 };
 
 photoSlider();
+
+// Calculator
+const calculator = () => {
+
+    const calculateForm = document.getElementById('card_order');
+
+    const calculateTotal = () => {
+
+        const clubs = document.querySelectorAll('.club'),
+              timesWrap = calculateForm.querySelector('.time'),
+              times = timesWrap.querySelectorAll('input'),
+              promocode = calculateForm.querySelector('.price-message'),
+              totalPrice = document.getElementById('price-total');
+
+        let selectedTime,
+            selectedClub,
+            isPromo = promocode.querySelector('input');
+
+        const clubPrice = {
+            mozaika: {
+                1: 2999,
+                6: 14990,
+                9: 21990,
+                12: 24990  
+            },
+            schelkovo: {
+                1: 1999,
+                6: 9900,
+                9: 13900,
+                12: 19900
+            }
+        };
+
+        times.forEach(time => time.checked ? selectedTime = time.value : false);
+        clubs.forEach(club => club.querySelector('input').checked ? selectedClub = club.querySelector('input').value : false);
+
+        if (isPromo.value === 'ТЕЛО2020') {
+            totalPrice.textContent = Math.floor(+clubPrice[selectedClub][selectedTime] - (+clubPrice[selectedClub][selectedTime] * 0.3));
+        } else {
+            totalPrice.textContent = clubPrice[selectedClub][selectedTime];
+        }
+
+    };
+
+    calculateForm.addEventListener('input', (event) => {
+        if ( (event.target.matches('[name="card-type"]') || event.target.matches('[name="club-name"]')) &&
+             (document.querySelector('#card_order').querySelector('.club')) ) {
+
+            calculateTotal();
+
+        }
+
+    });
+
+    if ( calculateForm.querySelector('.price-message') ) {
+        calculateForm.querySelector('.price-message').querySelector('input').addEventListener('blur', calculateTotal);
+    }
+};
+
+calculator();
