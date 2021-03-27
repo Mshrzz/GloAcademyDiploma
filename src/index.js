@@ -894,6 +894,7 @@ showBurgerMenuOptions();
 const showScrollButton = () => {
 
     const scrollButton = document.getElementById('totop');
+    scrollButton.style.display = 'none';
 
     document.addEventListener('scroll', () => {
         if (pageYOffset >= 740) {
