@@ -837,3 +837,108 @@ const calculator = () => {
 };
 
 calculator();
+
+// Show burger menu script
+const showBurgerMenu = () => {
+
+    const burgerMenu = document.querySelector('.top-menu .hidden-large');
+    
+    document.addEventListener('resize', () => {
+
+        const widthWindow = document.documentElement.clientWidth;
+
+        if (widthWindow <= 768) {
+            burgerMenu.style.display = 'block';
+        } else if (widthWindow > 768) {
+            burgerMenu.style.display = 'none';
+        }
+    });
+};
+
+showBurgerMenu();
+
+// Make burger menu fixed on scroll
+const fixBurgerMenu = () => {
+
+    const topMenu = document.querySelector('.top-menu'),
+          burgerMenu = document.querySelector('.top-menu .hidden-large');
+
+    document.addEventListener('scroll', () => {
+        if (getComputedStyle(burgerMenu).getPropertyValue('display') === 'block') {
+            if (pageYOffset >= 240) {
+                topMenu.style.position = 'fixed';
+            } else if (pageYOffset < 240) {
+                topMenu.style.position = 'static';
+            }
+        }
+    });
+};
+
+fixBurgerMenu();
+
+// Show burger menu options
+const showBurgerMenuOptions = () => {
+
+    document.addEventListener('click', (event) => {
+        if (event.target.closest('.top-menu .hidden-large')) {
+            document.querySelector('.popup-menu').style.display = 'flex';
+        } else if (event.target.closest('.scroll') || event.target.closest('.close-menu-btn')) {
+            document.querySelector('.popup-menu').style.display = 'none';
+        }
+    });
+};
+
+showBurgerMenuOptions();
+
+// Show scroll button
+const showScrollButton = () => {
+
+    const scrollButton = document.getElementById('totop');
+
+    document.addEventListener('scroll', () => {
+        if (pageYOffset >= 740) {
+            scrollButton.style.display = 'block';
+        } else if (pageYOffset < 740) {
+            scrollButton.style.display = 'none';
+        }
+    });
+};
+
+showScrollButton();
+
+const smoothScrolling = () => {
+    document.body.addEventListener('click', (event) => {
+    
+        let target = event.target,
+            targetTagA = event.target.closest('a');
+        
+        // Сразу отсекаем клик на кнопки отправки заявки
+        if (target.matches('button') || target.classList.contains('close-btn')) {
+            return;
+        }
+        
+        event.preventDefault();
+    
+        if ( (targetTagA) && (targetTagA.getAttribute('href')[0] === '#') && 
+             (targetTagA.getAttribute('href').length > 2) ) {
+
+                 const blockID = targetTagA.getAttribute('href').substring(1);
+
+                 document.getElementById(blockID).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+        } else if ( targetTagA && targetTagA.id === 'totop' ) {
+
+            document.body.scrollIntoView({
+               behavior: 'smooth',
+               block: 'start'
+           });
+
+        }
+    
+    });
+};
+
+smoothScrolling();
