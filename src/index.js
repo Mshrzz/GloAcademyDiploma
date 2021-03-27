@@ -61,6 +61,37 @@ const sendForm = () => {
 
         event.preventDefault();
 
+        // If club radio button exists
+        if ( event.target.querySelector('[name="club-name"]') ) {
+            
+            const clubNamesCheck = event.target.querySelectorAll('[name="club-name"]');
+
+            let isSomeChecked;
+
+            clubNamesCheck.forEach(clubInput => clubInput.checked ? isSomeChecked = true : false);
+
+            if (!isSomeChecked) {
+                const radioBlock = event.target,
+                      radioMessBlock = document.createElement('p');
+                
+                radioMessBlock.style.cssText = 'color: red; font-size: 1.2em; margin: 5px 0;';
+                radioMessBlock.textContent = 'Вы должны выбрать клуб';
+
+                radioBlock.append(radioMessBlock);
+
+                event.target.querySelector('[type="submit"]').disabled = true;
+
+                setTimeout(() => {
+                    radioMessBlock.style.display = 'none';
+                    event.target.querySelector('[type="submit"]').disabled = false;
+                }, 1000);
+
+                return;
+
+            }
+
+        }
+
         // If checkbox exists and not checked
         if ( event.target.querySelector('[type="checkbox"]') && !event.target.querySelector('[type="checkbox"]').checked ) {
             
@@ -83,13 +114,17 @@ const sendForm = () => {
         }
 
         // Validation for name
-        if ( ((event.target.querySelector('[name="name"]')) && (event.target.querySelector('[name="name"]').value.trim().length < 2) && !(event.target.closest('.price-message'))) ) {
+        if ( ( (event.target.querySelector('[name="name"]')) && (event.target.querySelector('[name="name"]').value.trim().length < 2) ) ) {
+
             const inputName = event.target.querySelector('[name="name"]');
-            
-            inputName.setCustomValidity('Недостаточно символов для имени');
-            inputName.addEventListener('blur', function() { this.value.trim().length >= 2 && this.setCustomValidity(''); }, false);
-            
-            return;
+
+            if (inputName.placeholder === 'Промокод') {
+                inputName.setCustomValidity('');
+            } else {
+                inputName.setCustomValidity('Недостаточно символов для имени');
+                inputName.addEventListener('blur', function() { this.value.trim().length >= 2 && this.setCustomValidity(''); }, false);
+                return;
+            }
         }
 
         // Set events for validation. Its simplifies the code
@@ -129,7 +164,18 @@ const sendForm = () => {
                 if ( event.target.closest('.form-content') ) {
                     // Clear form's inputs
                     let formInputs = event.target.querySelectorAll('input');
-                    formInputs.forEach(item => item.value = '');
+
+                    formInputs.forEach((item) => {
+                        
+                        if ( item.name === 'club-name' ) {
+                            item.value = item.value;
+                        } else if (item.name === 'card-type') {
+                            item.value = item.value;
+                        } else {
+                            item.value = '';
+                        }
+
+                    });
                     
                     // Hide form
                     event.target.closest('form').style.display = 'none';
@@ -156,12 +202,34 @@ const sendForm = () => {
 
                     // Clear form's inputs
                     let formInputs = event.target.querySelectorAll('input');
-                    formInputs.forEach(item => item.value = '');
+
+                    formInputs.forEach((item) => {
+                        
+                        if ( item.name === 'club-name' ) {
+                            item.value = item.value;
+                        } else if (item.name === 'card-type') {
+                            item.value = item.value;
+                        } else {
+                            item.value = '';
+                        }
+
+                    });
+
                     // Style input for success input and put success message
                     event.target.querySelectorAll('input').forEach((item) => item.style.border = '2px solid green');
                     statusMessage.textContent = successMessage;
+                    
                     // Clearn succes style for input after 1500ms
-                    setTimeout(() => event.target.querySelectorAll('input').forEach((item) => item.style.border = 'none'), 1500);
+                    setTimeout(() => event.target.querySelectorAll('input').forEach((item) => {
+                        
+                        item.style.border = 'none';
+
+                        if (event.target.closest('#card_order')) {
+                            item.style.border = '1px solid #b7b7b7';
+                        }
+
+                    }), 1500);
+
                     // Open thanks frame
                     document.getElementById('thanks').style.display = 'flex';
                     // Close event listener for this thanks frame
@@ -205,12 +273,32 @@ const sendForm = () => {
 
                     // Clear form's inputs
                     let formInputs = event.target.querySelectorAll('input');
-                    formInputs.forEach(item => item.value = '');
+
+                    formInputs.forEach((item) => {
+                        
+                        if ( item.name === 'club-name' ) {
+                            item.value = item.value;
+                        } else if (item.name === 'card-type') {
+                            item.value = item.value;
+                        } else {
+                            item.value = '';
+                        }
+
+                    });
+
                     // Style input for error input and put error message
                     event.target.querySelectorAll('input').forEach((item) => item.style.border = '2px solid red');
                     statusMessage.textContent = errorMessage;
                     // Clear error style for input after 1500ms
-                    setTimeout(() => event.target.querySelectorAll('input').forEach((item) => item.style.border = 'none'), 1500);
+                    setTimeout(() => event.target.querySelectorAll('input').forEach((item) => {
+
+                        item.style.border = 'none';
+
+                        if (event.target.closest('#card_order')) {
+                            item.style.border = '1px solid #b7b7b7';
+                        }
+
+                }), 1500);
                     
                     // Create error message and put it to thanks modal window
                     const thanksErrHeader = document.createElement('h4'),
@@ -251,6 +339,26 @@ const sendForm = () => {
                 // Reset checkbox
                 if (event.target.querySelector('[type="checkbox"]')) {
                     event.target.querySelector('[type="checkbox"]').checked = false;
+                }
+
+                if (event.target.querySelector('[name="club-name"]')) {
+
+                    if (document.getElementById('price-total')) {
+                        document.getElementById('price-total').textContent = '2999';
+                    }
+                    
+                    event.target.querySelectorAll('[name="club-name"]').forEach(clubInput => clubInput.checked = false);
+                    event.target.querySelectorAll('[name="club-name"]')[0].checked = true;
+                }
+
+                if (event.target.querySelector('[name="card-type"]')) {
+                    
+                    if (document.getElementById('price-total')) {
+                        document.getElementById('price-total').textContent = '2999';
+                    }
+
+                    event.target.querySelectorAll('[name="card-type"]').forEach(cardType => cardType.checked = false);
+                    event.target.querySelectorAll('[name="card-type"]')[0].checked = true;
                 }
 
                 setTimeout(() => {
@@ -790,9 +898,15 @@ const calculator = () => {
 
         const clubs = document.querySelectorAll('.club'),
               timesWrap = calculateForm.querySelector('.time'),
-              times = timesWrap.querySelectorAll('input'),
               promocode = calculateForm.querySelector('.price-message'),
               totalPrice = document.getElementById('price-total');
+
+        if (times) {
+            times = 0;
+        }
+        
+        let times = timesWrap.querySelectorAll('input');
+        
 
         let selectedTime,
             selectedClub,
@@ -800,16 +914,16 @@ const calculator = () => {
 
         const clubPrice = {
             mozaika: {
-                1: 2999,
-                6: 14990,
-                9: 21990,
-                12: 24990  
+                '1m': 2999,
+                '6m': 14990,
+                '9m': 21990,
+                '12m': 24990  
             },
             schelkovo: {
-                1: 1999,
-                6: 9900,
-                9: 13900,
-                12: 19900
+                '1m': 1999,
+                '6m': 9900,
+                '9m': 13900,
+                '12m': 19900
             }
         };
 
