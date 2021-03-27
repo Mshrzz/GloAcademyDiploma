@@ -130,6 +130,8 @@ const sendForm = () => {
                             item.value = item.value;
                         } else if (item.name === 'card-type') {
                             item.value = item.value;
+                        } else if (item.type === 'hidden') {
+                            item.value = item.value;
                         } else {
                             item.value = '';
                         }
@@ -167,6 +169,8 @@ const sendForm = () => {
                         if ( item.name === 'club-name' ) {
                             item.value = item.value;
                         } else if (item.name === 'card-type') {
+                            item.value = item.value;
+                        } else if (item.type === 'hidden') {
                             item.value = item.value;
                         } else {
                             item.value = '';
@@ -238,6 +242,8 @@ const sendForm = () => {
                         if ( item.name === 'club-name' ) {
                             item.value = item.value;
                         } else if (item.name === 'card-type') {
+                            item.value = item.value;
+                        } else if (item.type === 'hidden') {
                             item.value = item.value;
                         } else {
                             item.value = '';
